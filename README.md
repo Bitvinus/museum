@@ -1,6 +1,6 @@
 # Museum
 
-[DEMO](https://bitvinus.github.io/museum/)
+[DEMO](https://karamysh.github.io/museum/)
 
 <div>
 
