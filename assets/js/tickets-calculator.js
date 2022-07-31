@@ -30,7 +30,6 @@ for (let plusBtn of plusBtns) {
   plusBtn.addEventListener('click', calculateTotal);
 }
 
-
 function checkType() {
   let type;
   if (permanentType.checked) {
@@ -46,8 +45,8 @@ function checkType() {
 function getQty() {
   let result = {
     basicQuantity: 0,
-    seniorQuantity: 0
-  }
+    seniorQuantity: 0,
+  };
   result.basicQuantity = basicQty.value;
   result.seniorQuantity = seniorQty.value;
   return result;
@@ -58,9 +57,9 @@ function calculateTotal() {
   qty = getQty();
   let price = +prices[myStorage.getItem('ticketType')];
   let totalAmount = 0;
-  totalAmount = +qty.basicQuantity * price +  +qty.seniorQuantity * price/2;
+  totalAmount = +qty.basicQuantity * price + (+qty.seniorQuantity * price) / 2;
   totalText.textContent = totalAmount;
-  function updateMyStorage(){
+  function updateMyStorage() {
     myStorage.setItem('ticketType', type);
     myStorage.setItem('basicQuantity', basicQty.value);
     myStorage.setItem('seniorQuantity', seniorQty.value);
@@ -69,28 +68,31 @@ function calculateTotal() {
   updateMyStorage();
 }
 
-
 function updateFromStorage() {
   let type = myStorage.getItem('ticketType');
   if (type === 'permanent') {
     permanentType.checked = true;
   } else if (type === 'temporary') {
-     temporaryType.checked = true;
+    temporaryType.checked = true;
   } else {
     combinedType.checked = true;
   }
 
-  totalText.textContent =  myStorage.getItem('totalAmount') || 30;
+  totalText.textContent = myStorage.getItem('totalAmount') || 30;
   basicQty.value = myStorage.getItem('basicQuantity') || 1;
-  seniorQty.value = myStorage.getItem('seniorQuantity')|| 1;
+  seniorQty.value = myStorage.getItem('seniorQuantity') || 1;
 }
 updateFromStorage();
 window.addEventListener('load', updateFromStorage);
 
 //form calculator
 const formType = document.getElementById('ticket-type');
-const formOverviewType = document.querySelector('.overview-type')
-const typeText = { permanent: 'Permanent exhibition', temporary: 'Temporary exhibition', combined: 'Combined Admission' }
+const formOverviewType = document.querySelector('.overview-type');
+const typeText = {
+  permanent: 'Permanent exhibition',
+  temporary: 'Temporary exhibition',
+  combined: 'Combined Admission',
+};
 const qtyWrapper = document.querySelector('.form-qty-wrapper');
 const formQtys = qtyWrapper.querySelectorAll('.number');
 const formQtyBtns = qtyWrapper.querySelectorAll('button');
@@ -103,11 +105,17 @@ const formOvrviewDate = document.querySelector('.overview-date');
 const formOvrviewTime = document.querySelector('.overview-time');
 const overview = document.querySelector('.overview-amount-wrapper');
 const formOverviewQtys = overview.querySelectorAll('.overview-amount-qty');
-const formOverviewBasicText = overview.querySelector('.overview-amount-text-basic');
-const formOverviewSeniorText = overview.querySelector('.overview-amount-text-senior');
+const formOverviewBasicText = overview.querySelector(
+  '.overview-amount-text-basic',
+);
+const formOverviewSeniorText = overview.querySelector(
+  '.overview-amount-text-senior',
+);
 const formOverviewBasicAmount = overview.querySelector('.overview-basic-qty');
 const formOverviewSeniorAmount = overview.querySelector('.overview-senior-qty');
-const formOverviewTotalAmount = overview.querySelector('.overview-total-number');
+const formOverviewTotalAmount = overview.querySelector(
+  '.overview-total-number',
+);
 
 const formDate = document.getElementById('date');
 const formTime = document.getElementById('time');
@@ -116,7 +124,11 @@ formDate.addEventListener('change', updateDate);
 
 function updateDate() {
   formDate.classList.add('selected');
-  let dateTicket = new Date(this.value).toLocaleDateString('en-US', { day: 'numeric', month: 'long', weekday: 'long'});
+  let dateTicket = new Date(this.value).toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'long',
+    weekday: 'long',
+  });
   formOvrviewDate.textContent = dateTicket;
   myStorage.setItem('dateTicket', this.value);
   myStorage.setItem('ticketDate', dateTicket);
@@ -129,7 +141,7 @@ function storeType() {
   let type;
   if (typeNumber === 1) {
     type = 'permanent';
-  } else if(typeNumber === 2) {
+  } else if (typeNumber === 2) {
     type = 'temporary';
   } else {
     type = 'combined';
@@ -145,10 +157,10 @@ for (let btn of formQtyBtns) {
 }
 
 function changeFormQty() {
-   let result = {
+  let result = {
     basicQuantity: 0,
-    seniorQuantity: 0
-  }
+    seniorQuantity: 0,
+  };
   result.basicQuantity = formQtys[0].value;
   result.seniorQuantity = formQtys[1].value;
   return result;
@@ -162,21 +174,21 @@ function formCalculateTotal() {
   let basciAmount = +qty.basicQuantity * price;
   formOverviewQtys[0].textContent = +qty.basicQuantity;
   formOverviewBasicText.textContent = `Basic (${price} €)`;
-  formOverviewBasicAmount.textContent = `${basciAmount} €`
-  let seniorAmount = +qty.seniorQuantity * price/2;
+  formOverviewBasicAmount.textContent = `${basciAmount} €`;
+  let seniorAmount = (+qty.seniorQuantity * price) / 2;
   formOverviewQtys[1].textContent = +qty.seniorQuantity;
-  formOverviewSeniorText.textContent = `Senior (${price/2} €)`;
-  formOverviewSeniorAmount.textContent = `${seniorAmount} €`
-  totalAmount = basciAmount +  seniorAmount;
-  formOverviewTotalAmount.textContent = `${basciAmount +  seniorAmount} €`;
-  function updateMyStorage(){
+  formOverviewSeniorText.textContent = `Senior (${price / 2} €)`;
+  formOverviewSeniorAmount.textContent = `${seniorAmount} €`;
+  totalAmount = basciAmount + seniorAmount;
+  formOverviewTotalAmount.textContent = `${basciAmount + seniorAmount} €`;
+  function updateMyStorage() {
     myStorage.setItem('ticketType', type);
     myStorage.setItem('basicQuantity', qty.basicQuantity);
     myStorage.setItem('seniorQuantity', qty.seniorQuantity);
     myStorage.setItem('totalAmount', totalAmount);
-    myStorage.setItem('totalAmountText', `${basciAmount +  seniorAmount} €`);
+    myStorage.setItem('totalAmountText', `${basciAmount + seniorAmount} €`);
     myStorage.setItem('basicPrice', `Basic (${price} €)`);
-    myStorage.setItem('seniorPrice', `Senior (${price/2} €)`);
+    myStorage.setItem('seniorPrice', `Senior (${price / 2} €)`);
     myStorage.setItem('basicAmount', `${basciAmount} €`);
     myStorage.setItem('seniorAmount', `${seniorAmount} €`);
   }
@@ -190,7 +202,7 @@ function updateFormFromStorage() {
   formType.options.selectedIndex = typeNumbers[myStorage.getItem('ticketType')];
   formOverviewType.textContent = typeText[myStorage.getItem('ticketType')];
   formQtys[0].value = myStorage.getItem('basicQuantity') || 1;
-  formQtys[1].value = myStorage.getItem('seniorQuantity')|| 1;
+  formQtys[1].value = myStorage.getItem('seniorQuantity') || 1;
   formOverviewQtys[0].textContent = formQtys[0].value;
   formOverviewQtys[1].textContent = formQtys[1].value;
   formOvrviewDate.textContent = myStorage.getItem('ticketDate');
@@ -218,15 +230,15 @@ updateFormFromStorage();
 function validDate() {
   let today = new Date();
   let dd = today.getDate();
-  let mm = today.getMonth() + 1; 
-  if(dd < 10){
-  dd = '0' + dd;
-  } 
-  if(mm < 10){
+  let mm = today.getMonth() + 1;
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+  if (mm < 10) {
     mm = '0' + mm;
-  } 
+  }
   today = `${today.getFullYear()}-${mm}-${dd}`;
-  formDate.setAttribute("min", today);
+  formDate.setAttribute('min', today);
 }
 
 formDate.addEventListener('focus', validDate);
@@ -251,11 +263,14 @@ function showError(node, message) {
 
 function validTime() {
   let time = formTime.value;
-  let hours = +time.slice(0,2);
+  let hours = +time.slice(0, 2);
   let minutes = +time.slice(3);
-  if ((hours > 18 || hours < 9) || (minutes !== 0 && minutes !== 30)) {
-    showError(formTime, 'Time shold be from 9:00 to 18:00 with step 30 minutes');
-  } else if ((hours <= 18 && hours >= 9) && (minutes === 0 || minutes === 30)){
+  if (hours > 18 || hours < 9 || (minutes !== 0 && minutes !== 30)) {
+    showError(
+      formTime,
+      'Time shold be from 9:00 to 18:00 with step 30 minutes',
+    );
+  } else if (hours <= 18 && hours >= 9 && (minutes === 0 || minutes === 30)) {
     formTime.classList.remove('error');
     updateTime();
   }
@@ -275,7 +290,7 @@ function vallidName() {
     } else if (regExp.test(name) || regExpRu.test(name)) {
       nameInput.classList.remove('error');
       validNameLength();
-    } 
+    }
   }
 
   function validNameLength() {
@@ -289,9 +304,8 @@ function vallidName() {
 
   function storeName() {
     myStorage.setItem('name', nameInput.value);
-  }  
+  }
 }
-
 
 emailInput.addEventListener('blur', validEmail);
 emailInput.addEventListener('change', validEmail);
@@ -306,14 +320,19 @@ function validEmail() {
   let secondDomain = domArr[1];
   if (username.length < 3 || username.length > 15) {
     showError(emailInput, 'Too shoort or too long email');
-    console.log('user',(username.length < 3 || username.length > 15))
-  } 
+    console.log('user', username.length < 3 || username.length > 15);
+  }
   if (firstDomain.length < 4 || secondDomain.length < 2) {
     showError(emailInput, 'Too shoort  domain name');
-    console.log('1',(firstDomain.length < 4 || secondDomain.length < 2));
+    console.log('1', firstDomain.length < 4 || secondDomain.length < 2);
   }
-  if ((username.length >= 3 && username.length <= 15) && (firstDomain.length >= 4 && secondDomain.length >= 2)) {
-     if (emailInput.classList.contains('error')) {
+  if (
+    username.length >= 3 &&
+    username.length <= 15 &&
+    firstDomain.length >= 4 &&
+    secondDomain.length >= 2
+  ) {
+    if (emailInput.classList.contains('error')) {
       emailInput.classList.remove('error');
     }
     storeEmail();
@@ -336,25 +355,13 @@ function validateTel() {
   validTelLength(tel);
 
   function validTelLength(str) {
-    let regExp2 = /\d/g; 
+    let regExp2 = /\d/g;
     let number = str.match(regExp2);
     if (number.length > 10) {
       showError(telInput, 'Number is too long');
     } else if (number.length <= 10) {
       telInput.classList.remove('error');
       validTelSeparators(str);
-    } 
-  } 
-
-  function validTelSeparators(str) {
-    let regExp = /^[0-9]{2,3}\s-?[0-9]{2,3}\s-?[0-9]{2,3}\s-?[0-9]{2,3}$/gi;
-    if (!regExp.test(str)) {
-     console.log(regExp.test(str));
-      showError(telInput, 'Only " " or "-" separators of 2 or 3 numbers are allowed (min10)');
-    } else if (regExp.test(str)) {
-      telInput.classList.remove('error');
-      storeTel();
-    } 
+    }
   }
 }
-
